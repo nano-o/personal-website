@@ -1,0 +1,26 @@
+{% import "macros/icons.html" as icons %}
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="page-header">
+    <h1>{{ section.title }}</h1>
+    <nav class="feed-links" aria-label="Blog feeds">
+      <a class="feed-link" href="{{ get_url(path='/feed.xml', trailing_slash=false) }}" aria-label="Atom feed">
+        {{ icons::feed_icon(name="atom") }}
+        <span>Feed</span>
+      </a>
+    </nav>
+  </header>
+  {% if section.pages %}
+    <ol class="post-list">
+      {% for post in section.pages %}
+        <li>
+          <a href="{{ post.permalink }}">{{ post.title }}</a>
+          {% if post.date %}<time datetime="{{ post.date }}">{{ post.date | date(format="%B %d, %Y") }}</time>{% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>No posts yet.</p>
+  {% endif %}
+{% endblock content %}

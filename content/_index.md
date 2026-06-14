@@ -1,10 +1,7 @@
----
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-layout: single
-author_profile: true
-classes: wide
----
++++
+title = "Giuliano Losa"
+template = "index.html"
++++
 
 Hello, my name is Giuliano Losa. Welcome to my research homepage! I am interested in the rigorous design, analysis, and implementation of distributed systems aided by formal methods.
 
@@ -18,7 +15,7 @@ I will be giving a lecture on Federated Byzantine Agreement at the [SPTDC School
 
 Paper accepted at [CAV 2026](https://conferences.i-cav.org/2026/): "Show Me The Money: An Exercise in Proof-Driven Software Understanding" (category Industrial Experience Reports & Case Studies), with J. Tafese, K. Nukala, H. Saidi, N. Shankar, A. Gurfinkel, G. Losa.
 
-I am a member of the program committee of [PLDI 2026](https://pldi26.sigplan.org/).
+I am a member of the review committee of [PLDI 2026](https://pldi26.sigplan.org/).
 
 Paper accepted at [IEEE Symposium on Security and Privacy (S&P 2026)](https://sp2026.ieee-security.org/):
 *[Fast Deterministically Safe Proof-of-Work Consensus](https://arxiv.org/abs/2512.19968)*, with Ali Farahbakhsh (Cornell University),  Giuliano Losa (Stellar Foundation), Youer Pu (Cornell University), and Lorenzo Alvisi (Cornell University).

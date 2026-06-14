@@ -1,20 +1,12 @@
----
-layout: single
-toc: true
-toc_sticky: true
-classes: wide
-title: "Streamlet in TLA+"
-permalink: blog/streamlet-in-tla+
-author_profile: true
-date: "2022-01-04"
-categories:
-- "streamlet"
-- "blockchain"
-- "consensus"
-- "tla+"
-- "PlusCal"
-show_date: true
----
++++
+title = "Streamlet in TLA+"
+date = 2022-01-04
+path = "blog/streamlet-in-tla+"
+
+[extra]
+tla_highlight = true
+categories = ["streamlet", "blockchain", "consensus", "tla+", "PlusCal"]
++++
 
 In this blog post, we will see how to specify the Streamlet algorithm in PlusCal/TLA+ with a focus on writing simple specifications that are amenable to model-checking of both safety and liveness properties with TLC.
 
@@ -87,7 +79,7 @@ We can see that the block with epoch 2 is notarized, thus finalizing the block w
 Blocks with epoch number 3 and 4 in the finalized chain are final because of the notarized block with epoch 5.
 
 
-![Possible blocktree produce by the Streamlet algorithm](/images/blocktree.svg)
+![Possible block tree produced by the Streamlet algorithm](/images/blocktree.svg)
 
 ## Safety guarantee
 
@@ -157,47 +149,75 @@ In TLA+:
 
 We start with a specification that makes use of non-determinism in order to eschew irrelevant details and capture the essence of how Streamlet ensures safety.
 The specification, appearing below and in [Streamlet.tla](https://github.com/nano-o/streamlet/blob/main/Streamlet.tla), is very short.
-With generous formatting, it consists of a mere 44 lines of PlusCal.
+It consists of a mere 44 numbered lines of PlusCal; the display below uses a few unnumbered continuation lines to keep the listing readable.
 
+{% listing(title="Listing 1: A compact PlusCal model of Streamlet safety") %}
 ```tla
 CONSTANTS
-        P \* The set of processes
-    ,   Tx \* Transtaction sets (the payload in a block)
+        P
+            \* The set of processes
+    ,   Tx
+            \* Transaction sets (the payload in a block)
     ,   MaxEpoch
-    ,   Quorum \* The set of quorums
-    ,   Leader(_) \* Leader(e) is the leader of epoch e
+    ,   Quorum
+            \* The set of quorums
+    ,   Leader(_)
+            \* Leader(e) is the leader of epoch e
 
 1   --algorithm Streamlet {
 2       variables
-3           vote = [p \in P |-> {}], \* the vote cast by the processes,
+3           vote = [p \in P |-> {}],
+                \* the votes cast by the processes
 4           proposal = [e \in E |-> <<>>];
 5       define {
-6           E == 1..MaxEpoch \* the set of epochs
+6           E == 1..MaxEpoch
+                \* the set of epochs
 7           Genesis == <<>>
-8           Epoch(b) ==  \* the epoch of a block
+8           Epoch(b) ==
+                \* the epoch of a block
 9               IF b = Genesis
-10              THEN 0 \* note how the root is by convention a block with epoch 0
+10              THEN 0
+                    \* the root is by convention a block with epoch 0
 11              ELSE b[Len(b)][1]
-12          Parent(b) == IF Len(b) = 1 THEN Genesis ELSE SubSeq(b, 1, Len(b)-1) \* the parent of a block
+12          Parent(b) ==
+                IF Len(b) = 1
+                THEN Genesis
+                ELSE SubSeq(b, 1, Len(b)-1)
 13          Blocks == UNION {vote[p] : p \in P}
-14          Notarized == {Genesis} \cup \* Genesis is considered notarized by default
-15              { b \in Blocks : \E Q \in Quorum : \A p \in Q : b \in vote[p] }
+14          Notarized ==
+                {Genesis} \cup
+                \* Genesis is considered notarized by default
+15              { b \in Blocks :
+                    \E Q \in Quorum :
+                        \A p \in Q : b \in vote[p] }
 16          Final(b) ==
-17              /\  \E tx \in Tx : Append(b, <<Epoch(b)+1,tx>>) \in Notarized
+17              /\  \E tx \in Tx :
+                    Append(b, <<Epoch(b)+1, tx>>) \in Notarized
 18              /\  Epoch(Parent(b)) = Epoch(b)-1
-19          Safety == \A b1,b2 \in {b \in Blocks : Final(b)} :
-20              Len(b1) <= Len(b2) => b1 = SubSeq(b2, 1, Len(b1))
+19          Safety ==
+                \A b1,b2 \in {b \in Blocks : Final(b)} :
+20                  Len(b1) <= Len(b2) =>
+                        b1 = SubSeq(b2, 1, Len(b1))
 21      }
 22      process (proc \in P)
 23          variables
-24              epoch = 1, \* the current epoch of p
-25              height = 0; \* height of the longest notarized chain that p voted to extend
+24              epoch = 1,
+                    \* the current epoch of p
+25              height = 0;
+                    \* height of the longest notarized chain
+                    \* that p voted to extend
 26      {
 27  l1:     while (epoch \in E) {
 28              \* if leader, make a proposal:
 29              if (Leader(epoch) = self) {
-30                  with (parent \in {b \in Notarized : height <= Len(b) /\ Epoch(b) <= epoch},
-31                          tx \in Tx, b = Append(parent, <<epoch, tx>>))
+30                  with (
+                        parent \in {
+                            b \in Notarized :
+                                height <= Len(b) /\ Epoch(b) <= epoch
+                        },
+31                      tx \in Tx,
+                        b = Append(parent, <<epoch, tx>>)
+                    )
 32                      proposal[epoch] := b
 33              };
 34              \* next, either vote for the leader's proposal or skip:
@@ -212,6 +232,7 @@ CONSTANTS
 43      }
 44  }
 ```
+{% end %}
 
 Let me now describe the specification informally.
 
@@ -318,21 +339,30 @@ Thus, any final block with an epoch greater or equal to `GSE-1` was not final wh
 Omitting definitions that are the same as before, here is the sequentialized specification of Streamlet.
 You can also find it in [SequentializedStreamlet.tla](https://github.com/nano-o/streamlet/blob/main/SequentializedStreamlet.tla)
 
+{% listing(title="Listing 2: Sequentialized Streamlet with the liveness check") %}
 ```tla
 1   --algorithm Streamlet {
 2       variables
-3           height = [p \in P |-> 0], \* height of the longest notarized p voted to extend
-4           votes = [p \in P |-> {}], \* the votes cast by the processes
-5           epoch = 1, \* the current epoch
-6           scheduled = {}, \* the processes that have been scheduled already in the current epoch
-7           proposal = <<>>; \* the proposal of the leader for the current epoch
+3           height = [p \in P |-> 0],
+                \* height of the longest notarized chain p voted to extend
+4           votes = [p \in P |-> {}],
+                \* the votes cast by the processes
+5           epoch = 1,
+                \* the current epoch
+6           scheduled = {},
+                \* processes already scheduled in the current epoch
+7           proposal = <<>>;
+                \* the leader's proposal for the current epoch
 8       define {
 9           NextProc ==
 10              IF scheduled = {}
 11              THEN CHOOSE p \in P : Leader(epoch) = p
 12              ELSE CHOOSE p \in P : \neg p \in scheduled
 13          \* It takes at most 4 epochs to finalize a new block:
-14          Liveness == (epoch = GSE+4) => \E b \in Blocks : Final(b) /\ Epoch(b) >= GSE-1
+14          Liveness ==
+                (epoch = GSE+4) =>
+                    \E b \in Blocks :
+                        Final(b) /\ Epoch(b) >= GSE-1
 15      }
 16      process (scheduler \in {"sched"})
 17      {
@@ -340,10 +370,20 @@ You can also find it in [SequentializedStreamlet.tla](https://github.com/nano-o/
 19              with (proc = NextProc) {
 20                  \* if proc is leader, make a proposal:
 21                  if (Leader(epoch) = proc)
-22                      with (parent \in {b \in Notarized : height[proc] <= Len(b) /\ Epoch(b) <= epoch},
-23                              tx \in Tx, b = Append(parent, <<epoch, tx>>)) {
-24                          \* after the first synchronous epoch, the leader is able to pick a notarized block with the highest height:
-25                          when epoch > GSE => \A b2 \in Notarized : Len(b2) <= Len(parent);
+22                      with (
+                            parent \in {
+                                b \in Notarized :
+                                    height[proc] <= Len(b) /\
+                                    Epoch(b) <= epoch
+                            },
+23                          tx \in Tx,
+                            b = Append(parent, <<epoch, tx>>)
+                        ) {
+24                          \* After the first synchronous epoch,
+                            \* the leader can pick a highest notarized block:
+25                          when epoch > GSE =>
+                                \A b2 \in Notarized :
+                                    Len(b2) <= Len(parent);
 26                          proposal := b
 27                      };
 28                  \* next, if possible, vote for the leader's proposal:
@@ -367,6 +407,7 @@ You can also find it in [SequentializedStreamlet.tla](https://github.com/nano-o/
 46      }
 47  }
 ```
+{% end %}
 
 ### Model-checking results
 
@@ -399,4 +440,3 @@ The original Streamlet presentation indeed stipulates that processes proceeds th
 The rule that the leader uses to pick a block to extend can be slightly improved.
 In the original Streamlet, the leader proposes a new block that extends one of the longest notarized chains that the leader knows of.
 However, it would make some executions finalize a new block faster if the leader would instead pick the notarized block with the highest epoch that it knows of.
-

@@ -1,10 +1,7 @@
----
-layout: single
-author_profile: true
-permalink: /talks/
-title: Talks
-classes: wide
----
++++
+title = "Talks"
+path = "talks"
++++
 
 ## Recent Talks
 

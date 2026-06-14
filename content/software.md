@@ -1,10 +1,7 @@
----
-layout: single
-author_profile: true
-permalink: /software/
-title: Software, Specifications, Proofs, etc.
-classes: wide
----
++++
+title = "Software, Specifications, Proofs, etc."
+path = "software"
++++
 
 Are specifications and proofs software?
 

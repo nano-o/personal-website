@@ -1,0 +1,65 @@
+{% import "macros/icons.html" as icons %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% if page %}{{ page.title }} - {{ config.title }}{% elif section and section.title %}{{ section.title }} - {{ config.title }}{% else %}{{ config.title }}{% endif %}{% endblock title %}</title>
+  <meta name="description" content="{{ config.description }}">
+  <meta property="og:site_name" content="{{ config.title }}">
+  <meta property="og:title" content="{% if page %}{{ page.title }}{% elif section and section.title %}{{ section.title }}{% else %}{{ config.title }}{% endif %}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:image" content="{{ get_url(path=config.extra.avatar) }}">
+  <link rel="canonical" href="{{ current_url | default(value=config.base_url) }}">
+  {% block feed_links %}
+    <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Blog Feed" href="{{ get_url(path='/feed.xml', trailing_slash=false) }}">
+  {% endblock feed_links %}
+  <link rel="stylesheet" href="{{ get_url(path='site.css') }}">
+  {% block head_extra %}{% endblock head_extra %}
+</head>
+<body class="{% block body_class %}{% endblock body_class %}">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-wrap">
+      <a href="{{ get_url(path='/') }}" class="avatar-link masthead-avatar">
+        <img src="{{ config.extra.avatar }}" alt="{{ config.title }}" width="112" height="112">
+      </a>
+      <div class="masthead-copy">
+        <a class="site-title" href="{{ get_url(path='/') }}">{{ config.title }}</a>
+        <p class="bio">{{ config.extra.bio }}</p>
+        <p class="location">{{ config.extra.location }}</p>
+      </div>
+      <ul class="profile-links" aria-label="Profile links">
+        {% for link in config.extra.links %}
+          <li>
+            <a class="profile-link" href="{{ link.url }}">
+              {{ icons::profile_icon(name=link.icon | default(value="external-link")) }}
+              <span>{{ link.label }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+      <nav class="site-nav" aria-label="Primary navigation">
+        {% set current = current_path | default(value="") %}
+        {% for item in config.extra.nav %}
+          {% set is_active = current == item.url or (item.url != "/" and current is starting_with(item.url)) %}
+          <a href="{{ item.url }}"{% if is_active %} class="is-active" aria-current="page"{% endif %}>{{ item.name }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" class="{% block main_class %}wrap layout{% endblock main_class %}">
+    <article class="{% block article_class %}content{% endblock article_class %}">
+      {% block content %}{% endblock content %}
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>&copy; {{ now() | date(format="%Y") }} {{ config.title }}.</p>
+      <p>{{ config.extra.copyright_notice }}</p>
+    </div>
+  </footer>
+</body>
+</html>

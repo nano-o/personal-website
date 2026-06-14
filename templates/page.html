@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+  {% if page.extra.tla_highlight %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/isbl-editor-light.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/konnov/tlaplus-highlightjs/tlaplus-minified.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+  {% endif %}
+{% endblock head_extra %}
+
+{% block content %}
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    {% if page.date %}<p class="meta">{{ page.date | date(format="%B %d, %Y") }}</p>{% endif %}
+  </header>
+  {{ page.content | safe }}
+{% endblock content %}

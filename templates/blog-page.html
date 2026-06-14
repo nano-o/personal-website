@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block body_class %}blog-post-page{% endblock body_class %}
+{% block main_class %}wrap post-layout{% endblock main_class %}
+{% block article_class %}content post-content{% endblock article_class %}
+
+{% block head_extra %}
+  {% if page.extra.tla_highlight %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/isbl-editor-light.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/konnov/tlaplus-highlightjs/tlaplus-minified.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+  {% endif %}
+{% endblock head_extra %}
+
+{% block content %}
+  <a class="back-link" href="{{ get_url(path='/blog/') }}">Back to blog</a>
+  <header class="page-header post-header">
+    <h1>{{ page.title }}</h1>
+    {% if page.date %}<p class="meta">By {{ config.title }} on {{ page.date | date(format="%B %d, %Y") }}</p>{% endif %}
+  </header>
+
+  {% set hide_toc = page.extra.hide_toc | default(value=false) %}
+  {% if page.toc and not hide_toc %}
+    <nav class="post-toc" aria-labelledby="toc-title">
+      <h2 id="toc-title">Contents</h2>
+      <ol>
+        {% for heading in page.toc %}
+          <li>
+            <a href="{{ heading.permalink | safe }}">{{ heading.title }}</a>
+            {% if heading.children %}
+              <ol>
+                {% for child in heading.children %}
+                  <li>
+                    <a href="{{ child.permalink | safe }}">{{ child.title }}</a>
+                    {% if child.children %}
+                      <ol>
+                        {% for grandchild in child.children %}
+                          <li><a href="{{ grandchild.permalink | safe }}">{{ grandchild.title }}</a></li>
+                        {% endfor %}
+                      </ol>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ol>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </nav>
+  {% endif %}
+
+  {{ page.content | safe }}
+{% endblock content %}

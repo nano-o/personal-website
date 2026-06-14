@@ -1,0 +1,75 @@
+base_url = "https://www.losa.fr"
+title = "Giuliano Losa"
+description = "Giuliano's website"
+compile_sass = true
+generate_feeds = true
+feed_filenames = ["feed.xml"]
+build_search_index = false
+author = "Giuliano Losa"
+default_language = "en"
+
+[markdown]
+smart_punctuation = true
+
+[extra]
+email = "giuliano@losa.fr"
+bio = "Researcher in distributed computing and formal methods"
+avatar = "/images/painting-cropped.jpg"
+location = "Washington State, USA"
+copyright_notice = "Ce site est heberge par OVH, 2 rue Kellermann - 59100 Roubaix - France. Pour contacter cet hebergeur, rendez-vous a l'adresse https://help.ovhcloud.com/fr/."
+
+[[extra.nav]]
+name = "Home"
+url = "/"
+
+[[extra.nav]]
+name = "Research"
+url = "/research/"
+
+[[extra.nav]]
+name = "Talks"
+url = "/talks/"
+
+[[extra.nav]]
+name = "Blog"
+url = "/blog/"
+
+[[extra.nav]]
+name = "Software"
+url = "/software/"
+
+[[extra.links]]
+name = "Email"
+icon = "mail"
+label = "giuliano@losa.fr"
+url = "mailto:giuliano@losa.fr"
+
+[[extra.links]]
+name = "X"
+icon = "x"
+label = "giuliano_losa"
+url = "https://x.com/giuliano_losa"
+
+[[extra.links]]
+name = "GitHub"
+icon = "github"
+label = "nano-o"
+url = "https://github.com/nano-o"
+
+[[extra.links]]
+name = "Google Scholar"
+icon = "graduation-cap"
+label = "Google Scholar"
+url = "https://scholar.google.com/citations?user=m2jQVgQAAAAJ"
+
+[[extra.links]]
+name = "DBLP"
+icon = "book-open"
+label = "DBLP"
+url = "https://dblp.uni-trier.de/pid/04/11066.html"
+
+[[extra.links]]
+name = "SDF Research"
+icon = "external-link"
+label = "SDF Research"
+url = "https://research.stellar.org"

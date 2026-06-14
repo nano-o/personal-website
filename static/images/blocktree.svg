@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" role="img" aria-labelledby="title desc">
+  <title id="title">Possible Streamlet block tree</title>
+  <desc id="desc">A block tree where the finalized chain goes from block 0 to block 1, then to block 3, then block 4. Other branches are shown with dotted arrows.</desc>
+  <defs>
+    <marker id="arrow-final" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#245f73"/>
+    </marker>
+    <marker id="arrow-other" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#65635f"/>
+    </marker>
+    <style>
+      .background { fill: #fbfaf7; }
+      .final-edge {
+        fill: none;
+        stroke: #245f73;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        marker-end: url(#arrow-final);
+      }
+      .other-edge {
+        fill: none;
+        stroke: #65635f;
+        stroke-width: 2.5;
+        stroke-dasharray: 8 8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        marker-end: url(#arrow-other);
+      }
+      .block {
+        fill: #fbfaf7;
+        stroke: #202124;
+        stroke-width: 2.4;
+      }
+      .genesis {
+        fill: #f3f1ec;
+        stroke: #65635f;
+      }
+      .label {
+        fill: #202124;
+        font-family: "Source Sans 3", "Source Sans Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 28px;
+        font-weight: 650;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+      .unnotarized {
+        fill: #202124;
+        font-family: "Source Sans 3", "Source Sans Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 30px;
+        font-weight: 650;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+      .caption {
+        fill: #65635f;
+        font-family: "Source Sans 3", "Source Sans Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 15px;
+        dominant-baseline: central;
+      }
+    </style>
+  </defs>
+
+  <rect class="background" width="900" height="320"/>
+
+  <g aria-label="Block tree">
+    <path class="final-edge" d="M 90 174 C 118 164 141 151 167 138"/>
+    <path class="other-edge" d="M 213 120 C 247 105 282 91 314 79"/>
+    <path class="other-edge" d="M 362 61 C 397 51 436 43 475 40"/>
+    <path class="final-edge" d="M 211 144 C 247 176 286 198 326 207"/>
+    <path class="other-edge" d="M 374 201 C 412 185 452 164 486 151"/>
+    <path class="final-edge" d="M 374 222 C 408 238 449 258 481 269"/>
+    <path class="other-edge" d="M 529 274 C 571 276 616 281 658 284"/>
+
+    <g>
+      <circle class="block genesis" cx="66" cy="183" r="25"/>
+      <text class="label" x="66" y="183">0</text>
+    </g>
+    <g>
+      <circle class="block" cx="190" cy="128" r="25"/>
+      <text class="label" x="190" y="128">1</text>
+    </g>
+    <g>
+      <circle class="block" cx="338" cy="70" r="25"/>
+      <text class="label" x="338" y="70">2</text>
+    </g>
+    <text class="unnotarized" x="504" y="38">3</text>
+    <g>
+      <circle class="block" cx="350" cy="213" r="25"/>
+      <text class="label" x="350" y="213">3</text>
+    </g>
+    <text class="unnotarized" x="513" y="147">4</text>
+    <g>
+      <circle class="block" cx="505" cy="273" r="25"/>
+      <text class="label" x="505" y="273">4</text>
+    </g>
+    <g>
+      <circle class="block" cx="683" cy="285" r="25"/>
+      <text class="label" x="683" y="285">5</text>
+    </g>
+  </g>
+
+  <g aria-label="Legend" transform="translate(738 86)">
+    <circle class="block" cx="0" cy="0" r="9"/>
+    <text class="label" x="0" y="0" style="font-size: 13px;">n</text>
+    <text class="caption" x="18" y="0">notarized block</text>
+
+    <text class="unnotarized" x="0" y="45" style="font-size: 18px;">n</text>
+    <text class="caption" x="18" y="45">proposed block</text>
+
+    <path class="final-edge" d="M -11 90 H 37"/>
+    <text class="caption" x="55" y="90">finalized chain</text>
+
+  </g>
+</svg>

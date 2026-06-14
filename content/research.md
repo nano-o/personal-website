@@ -1,10 +1,7 @@
----
-layout: single
-author_profile: true
-permalink: /research/
-title: Research
-classes: wide
----
++++
+title = "Research"
+path = "research"
++++
 
 ## Publications
 
@@ -13,11 +10,11 @@ For a full list, see my profile [on DBLP](https://dblp.uni-trier.de/pid/04/11066
 ### Recent Publications
 
 * Ali Farahbakhsh (Cornell University),  Giuliano Losa (Stellar Foundation), Youer Pu (Cornell University), and Lorenzo Alvisi (Cornell University).
-"Fast Deterministically Safe Proof-of-Work Consensus" ([Preprint](./documents/sieve-preprint.pdf)).
+"Fast Deterministically Safe Proof-of-Work Consensus" ([Preprint](/documents/sieve-preprint.pdf)).
 Paper to appear at [IEEE Symposium on Security and Privacy (S&P 2026)](https://sp2026.ieee-security.org/).
 * Eli Gafni, Giuliano Losa, Michel Raynal, Gadi Taubenfeld.
 "Solving Tasks with Fewer Registers than Processes".
-Paper to appear at [OPODIS 2050](https://conferences.info.uaic.ro/opodis2025/).
+Paper to appear at [OPODIS 2025](https://conferences.info.uaic.ro/opodis2025/).
 * Nibesh Shrestha, Qianyu Yu, Aniket Kate, Giuliano Losa, Kartik Nayak, Xuechao Wang. "Optimistic, Signature-Free Reliable Broadcast and Its Applications", [CCS 2025](https://www.sigsac.org/ccs/CCS2025/). [arXiv version](https://arxiv.org/abs/2505.02761).
 *  Joseph Tafese, Siddharth Priya, Giuliano Losa, Arie Gurfinkel and Graydon Hoare, "A Tale of Two Case Studies: A Unified Exploration of Rust Verification with SeaBMC", [FMCAD 2025](https://fmcad.org/FMCAD25/). 
 * Giulian Losa (Stellar Development Foundation), Yifan Mao (Ohio State University), Shaileshh Bojja Venkatakrishnan (Ohio State University), and Yunqi Zhang (Ohio State University). Constellation: Peer-to-Peer Overlays for Federated Byzantine Agreement Systems. [FC 2025](https://fc25.ifca.ai/). [Preprint](https://fc25.ifca.ai/preproceedings/280.pdf).
