@@ -142,7 +142,10 @@ Moreover, the parent of a block `b` is the genesis block if `b` has length 1, an
 In TLA+:
 
 ```tla
-  Parent(b) == IF Len(b) = 1 THEN Genesis ELSE SubSeq(b, 1, Len(b)-1)
+  Parent(b) ==
+      IF Len(b) = 1
+      THEN Genesis
+      ELSE SubSeq(b, 1, Len(b)-1)
 ```
 
 ## First specification
@@ -325,7 +328,10 @@ This is reflected as follows in the PlusCal/TLA+ specification:
 Given the above, we now state the liveness property as:
 
 ```tla
-Liveness == (epoch = GSE+4) => \E b \in Blocks : Final(b) /\ Epoch(b) >= GSE-1
+Liveness ==
+    (epoch = GSE+4) =>
+        \E b \in Blocks :
+            Final(b) /\ Epoch(b) >= GSE-1
 ```
 
 In English, this states that by the beginning of epoch `GSE+4`, there is a final block whose epoch is greater or equal to `GSE-1`.

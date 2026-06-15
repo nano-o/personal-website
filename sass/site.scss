@@ -23,6 +23,8 @@ html {
   line-height: 1.55;
   color: var(--text);
   background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -310,7 +312,7 @@ a:focus-visible {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   color: #1f2933;
-  font-size: 0.86em;
+  font-size: 0.86rem;
   line-height: 1.45;
   tab-size: 4;
   -webkit-text-size-adjust: 100%;
@@ -334,7 +336,7 @@ a:focus-visible {
   min-width: max-content;
   padding: 0;
   background: transparent;
-  font-size: inherit;
+  font-size: inherit !important;
   line-height: inherit;
 }
 
@@ -588,7 +590,7 @@ a:focus-visible {
   .content pre {
     padding: 0.85rem 0.9rem;
     border-radius: 0;
-    font-size: 0.82em;
+    font-size: 0.78rem;
   }
 
   .code-listing figcaption {
