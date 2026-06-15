@@ -42,15 +42,16 @@ jobs:
             --workdir /project \
             "$ZOLA_IMAGE" build
 
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+      - name: Install SFTP tools
+        run: sudo apt-get update && sudo apt-get install -y lftp openssh-client
 
-      - name: Deploy over FTPS
+      - name: Deploy over SFTP
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
         run: |
           require_secret() {
             local name="$1"
@@ -67,10 +68,24 @@ jobs:
           require_secret FTP_PASSWORD
           require_secret FTP_SERVER_DIR
 
-          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" -e "
-            set ftp:ssl-force true
-            set ftp:ssl-protect-data true
-            set ssl:verify-certificate true
+          install -m 700 -d "$HOME/.ssh"
+
+          if [ -n "$SFTP_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SFTP_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+            chmod 600 "$HOME/.ssh/known_hosts"
+            sftp_connect_program='ssh -a -x -o StrictHostKeyChecking=yes'
+          else
+            sftp_connect_program='ssh -a -x -o StrictHostKeyChecking=accept-new'
+          fi
+
+          server_url="$FTP_SERVER"
+          case "$server_url" in
+            sftp://*) ;;
+            *) server_url="sftp://$server_url" ;;
+          esac
+
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$server_url" -e "
+            set sftp:connect-program \"$sftp_connect_program\"
             mirror -R --verbose public/ \"$FTP_SERVER_DIR\"
             bye
           "
