@@ -313,6 +313,8 @@ a:focus-visible {
   font-size: 0.86em;
   line-height: 1.45;
   tab-size: 4;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   -webkit-overflow-scrolling: touch;
 }
 

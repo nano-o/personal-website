@@ -5,7 +5,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/isbl-editor-light.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/konnov/tlaplus-highlightjs/tlaplus-minified.js"></script>
-    <script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('code[data-lang="tla"]').forEach(function (code) {
+          code.classList.add("language-tla");
+        });
+        hljs.highlightAll();
+      });
+    </script>
   {% endif %}
 {% endblock head_extra %}
 
