@@ -312,7 +312,7 @@ a:focus-visible {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   color: #1f2933;
-  font-size: 0.86rem;
+  font-size: 1em;
   line-height: 1.45;
   tab-size: 4;
   -webkit-text-size-adjust: 100%;
@@ -590,7 +590,6 @@ a:focus-visible {
   .content pre {
     padding: 0.85rem 0.9rem;
     border-radius: 0;
-    font-size: 0.78rem;
   }
 
   .code-listing figcaption {
