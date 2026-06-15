@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ZOLA_IMAGE: ghcr.io/getzola/zola:v0.22.1@sha256:b491a8bec3773815bdcdbbfbc2d0d60eda880ef550c4cc512349ab6451fbd72a
+      SITE_URL: https://www.losa.fr
 
     steps:
       - name: Check out repository
@@ -41,6 +42,9 @@ jobs:
             --volume "$PWD:/project" \
             --workdir /project \
             "$ZOLA_IMAGE" build
+
+      - name: Write deploy marker
+        run: printf '%s\n' "$GITHUB_SHA" > public/deploy-check.txt
 
       - name: Install SFTP tools
         run: sudo apt-get update && sudo apt-get install -y lftp openssh-client
@@ -117,3 +121,21 @@ jobs:
             mirror -R --verbose public/ $FTP_SERVER_DIR
             bye
           "
+
+      - name: Verify deployed site
+        run: |
+          marker_url="${SITE_URL%/}/deploy-check.txt?sha=$GITHUB_SHA"
+
+          for attempt in 1 2 3 4 5; do
+            marker="$(curl --fail --silent --show-error --location --max-time 30 "$marker_url" || true)"
+            marker="$(printf '%s' "$marker" | tr -d '\r\n')"
+
+            if [ "$marker" = "$GITHUB_SHA" ]; then
+              exit 0
+            fi
+
+            sleep 10
+          done
+
+          echo "::error title=Deployment verification failed::Uploaded files were not served from $marker_url."
+          exit 1
