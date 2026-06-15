@@ -10,6 +10,13 @@ Are specifications and proofs software?
 Various TLA+ specifications are available in the [TLA+ examples repository](https://github.com/tlaplus/Examples).
 If you like consensus algorithms, two interesting ones are [Streamlet](https://github.com/nano-o/streamlet) and [DAG-based consensus](https://github.com/tlaplus/Examples/tree/master/specifications/dag-consensus).
 
+## CPP-DPOR
+
+A model-checking library for distributed protocols, inspired by [Must](https://dl.acm.org/doi/10.1145/3689778).
+Uses dynamic partial-order reduction; parallel search never explores the same execution graph class twice, yet workers don't have to synchronize!
+Successfully used to debug new features in [stellar-core](https://github.com/stellar/stellar-core/).
+Sources are on github at [https://github.com/nano-o/CPP-DPOR](https://github.com/nano-o/CPP-DPOR).
+
 ## python-fbas
 
 A prototype tool to reason about Federated Byzantine Agreement Systems using SAT solvers.
