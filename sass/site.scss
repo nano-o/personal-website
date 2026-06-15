@@ -355,6 +355,14 @@ a:focus-visible {
   border-radius: 4px;
 }
 
+.pseudocode-listing pre {
+  line-height: 1.5;
+}
+
+.pseudocode-listing code {
+  font-family: "DejaVu Sans Mono", "Noto Sans Mono", "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
 .back-link {
   display: inline-block;
   margin-bottom: 1.4rem;
