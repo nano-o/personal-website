@@ -17,7 +17,7 @@ email = "giuliano@losa.fr"
 bio = "Researcher in distributed computing and formal methods"
 avatar = "/images/painting-cropped.jpg"
 location = "Washington State, USA"
-copyright_notice = "Ce site est heberge par OVH, 2 rue Kellermann - 59100 Roubaix - France. Pour contacter cet hebergeur, rendez-vous a l'adresse https://help.ovhcloud.com/fr/."
+copyright_notice = "Ce site est hébergé par OVH, 2 rue Kellermann - 59100 Roubaix - France. Pour contacter cet hébergeur, rendez-vous à l'adresse https://help.ovhcloud.com/fr/."
 
 [[extra.nav]]
 name = "Home"
