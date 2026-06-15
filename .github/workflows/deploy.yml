@@ -17,24 +17,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      ZOLA_VERSION: 0.22.1
+      ZOLA_IMAGE: ghcr.io/getzola/zola:v0.22.1
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v6.0.3
 
-      - name: Install Zola
-        run: |
-          curl -fsSL -o /tmp/zola.tar.gz "https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
-          tar -xzf /tmp/zola.tar.gz -C /tmp
-          sudo install /tmp/zola /usr/local/bin/zola
-          zola --version
+      - name: Pull Zola image
+        run: docker pull "$ZOLA_IMAGE"
 
       - name: Check site
-        run: zola check --skip-external-links
+        run: |
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            --volume "$PWD:/project" \
+            --workdir /project \
+            "$ZOLA_IMAGE" check --skip-external-links
 
       - name: Build site
-        run: zola build
+        run: |
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            --volume "$PWD:/project" \
+            --workdir /project \
+            "$ZOLA_IMAGE" build
 
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp

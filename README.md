@@ -19,12 +19,13 @@ The generated site is written to `public/`.
 ## Deployment
 
 Pushes to `main` and manual workflow runs build the site and deploy `public/` over FTPS.
+The workflow runs Zola through the official `ghcr.io/getzola/zola` container image.
 Configure these repository secrets in GitHub:
 
 - `FTP_SERVER`
 - `FTP_USERNAME`
 - `FTP_PASSWORD`
-- `FTP_SERVER_DIR`
+- `FTP_SERVER_DIR`: remote directory to publish into. For OVH shared hosting this is commonly `www/`; use the directory that contains the site's web root for your account. This value must not be blank.
 
 ## Third-party assets
 
