@@ -19,7 +19,7 @@ The generated site is written to `public/`.
 ## Deployment
 
 Pushes to `main` and manual workflow runs build the site and deploy `public/` over FTPS.
-The workflow runs Zola through the official `ghcr.io/getzola/zola` container image.
+The workflow runs Zola through the official `ghcr.io/getzola/zola` container image, pinned by digest.
 Configure these repository secrets in GitHub:
 
 - `FTP_SERVER`

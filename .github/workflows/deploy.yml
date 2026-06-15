@@ -17,7 +17,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      ZOLA_IMAGE: ghcr.io/getzola/zola:v0.22.1
+      ZOLA_IMAGE: ghcr.io/getzola/zola:v0.22.1@sha256:b491a8bec3773815bdcdbbfbc2d0d60eda880ef550c4cc512349ab6451fbd72a
 
     steps:
       - name: Check out repository
