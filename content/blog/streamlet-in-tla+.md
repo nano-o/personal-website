@@ -157,39 +157,29 @@ It consists of a mere 44 numbered lines of PlusCal; the display below uses a few
 {% listing(title="Listing 1: A compact PlusCal model of Streamlet safety") %}
 ```tla
 CONSTANTS
-        P
-            \* The set of processes
-    ,   Tx
-            \* Transaction sets (the payload in a block)
+        P \* The set of processes
+    ,   Tx \* Transaction sets (the payload in a block)
     ,   MaxEpoch
-    ,   Quorum
-            \* The set of quorums
-    ,   Leader(_)
-            \* Leader(e) is the leader of epoch e
+    ,   Quorum \* The set of quorums
+    ,   Leader(_) \* Leader(e) is the leader of epoch e
 
 1   --algorithm Streamlet {
 2       variables
-3           vote = [p \in P |-> {}],
-                \* the votes cast by the processes
+3           vote = [p \in P |-> {}], \* the votes cast by the processes
 4           proposal = [e \in E |-> <<>>];
 5       define {
-6           E == 1..MaxEpoch
-                \* the set of epochs
+6           E == 1..MaxEpoch \* the set of epochs
 7           Genesis == <<>>
-8           Epoch(b) ==
-                \* the epoch of a block
+8           Epoch(b) == \* the epoch of a block
 9               IF b = Genesis
-10              THEN 0
-                    \* the root is by convention a block with epoch 0
+10              THEN 0 \* the root is by convention a block with epoch 0
 11              ELSE b[Len(b)][1]
-12          Parent(b) ==
+12          Parent(b) == \* the parent of a block
                 IF Len(b) = 1
                 THEN Genesis
                 ELSE SubSeq(b, 1, Len(b)-1)
 13          Blocks == UNION {vote[p] : p \in P}
-14          Notarized ==
-                {Genesis} \cup
-                \* Genesis is considered notarized by default
+14          Notarized == {Genesis} \cup \* Genesis is considered notarized by default
 15              { b \in Blocks :
                     \E Q \in Quorum :
                         \A p \in Q : b \in vote[p] }
@@ -204,11 +194,8 @@ CONSTANTS
 21      }
 22      process (proc \in P)
 23          variables
-24              epoch = 1,
-                    \* the current epoch of p
-25              height = 0;
-                    \* height of the longest notarized chain
-                    \* that p voted to extend
+24              epoch = 1, \* the current epoch of p
+25              height = 0; \* height of the longest notarized chain that p voted to extend
 26      {
 27  l1:     while (epoch \in E) {
 28              \* if leader, make a proposal:
@@ -349,16 +336,11 @@ You can also find it in [SequentializedStreamlet.tla](https://github.com/nano-o/
 ```tla
 1   --algorithm Streamlet {
 2       variables
-3           height = [p \in P |-> 0],
-                \* height of the longest notarized chain p voted to extend
-4           votes = [p \in P |-> {}],
-                \* the votes cast by the processes
-5           epoch = 1,
-                \* the current epoch
-6           scheduled = {},
-                \* processes already scheduled in the current epoch
-7           proposal = <<>>;
-                \* the leader's proposal for the current epoch
+3           height = [p \in P |-> 0], \* height of the longest notarized chain p voted to extend
+4           votes = [p \in P |-> {}], \* the votes cast by the processes
+5           epoch = 1, \* the current epoch
+6           scheduled = {}, \* processes already scheduled in the current epoch
+7           proposal = <<>>; \* the leader's proposal for the current epoch
 8       define {
 9           NextProc ==
 10              IF scheduled = {}
@@ -385,8 +367,7 @@ You can also find it in [SequentializedStreamlet.tla](https://github.com/nano-o/
 23                          tx \in Tx,
                             b = Append(parent, <<epoch, tx>>)
                         ) {
-24                          \* After the first synchronous epoch,
-                            \* the leader can pick a highest notarized block:
+24                          \* After the first synchronous epoch, the leader can pick a highest notarized block:
 25                          when epoch > GSE =>
                                 \A b2 \in Notarized :
                                     Len(b2) <= Len(parent);
