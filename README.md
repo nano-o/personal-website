@@ -25,7 +25,7 @@ Configure these repository secrets in GitHub:
 - `FTP_SERVER`: SFTP hostname, with or without an `sftp://` prefix
 - `FTP_USERNAME`
 - `FTP_PASSWORD`
-- `FTP_SERVER_DIR`: remote directory to publish into. For OVH shared hosting this is commonly `www/`; use the directory that contains the site's web root for your account. This value must not be blank.
+- `FTP_SERVER_DIR`: remote directory to publish into. For OVH shared hosting this is commonly `www/`; use the directory that contains the site's web root for your account. This value must be a bare path without quotes or spaces.
 - `SFTP_KNOWN_HOSTS` (optional): known_hosts entry for the SFTP server. If omitted, the workflow accepts the server key on first connection.
 
 ## Third-party assets

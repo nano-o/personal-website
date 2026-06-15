@@ -69,6 +69,16 @@ jobs:
           require_secret FTP_PASSWORD
           require_secret FTP_SERVER_DIR
 
+          if [[ "$FTP_SERVER_DIR" == *\"* || "$FTP_SERVER_DIR" == *"'"* ]]; then
+            echo "::error title=Invalid FTP_SERVER_DIR::FTP_SERVER_DIR must not contain quotes. Use a bare path like www/."
+            exit 1
+          fi
+
+          if [[ "$FTP_SERVER_DIR" =~ [[:space:]] ]]; then
+            echo "::error title=Invalid FTP_SERVER_DIR::FTP_SERVER_DIR must not contain whitespace. Use a bare path like www/."
+            exit 1
+          fi
+
           install -m 700 -d "$HOME/.ssh"
 
           if [ -n "$SFTP_KNOWN_HOSTS" ]; then
@@ -104,6 +114,6 @@ jobs:
             set net:reconnect-interval-max 15
             set net:timeout 30
             set sftp:connect-program $sftp_connect_program
-            mirror -R --verbose public/ \"$FTP_SERVER_DIR\"
+            mirror -R --verbose public/ $FTP_SERVER_DIR
             bye
           "
