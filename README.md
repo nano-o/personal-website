@@ -18,7 +18,7 @@ The generated site is written to `public/`.
 
 ## Deployment
 
-Pushes to `main` and manual workflow runs build the site and deploy `public/` over SFTP.
+Pushes to `main` and manual workflow runs build the site and deploy `public/` over SFTP. The deploy step times out after 15 minutes.
 The workflow runs Zola through the official `ghcr.io/getzola/zola` container image, pinned by digest.
 Configure these repository secrets in GitHub:
 
