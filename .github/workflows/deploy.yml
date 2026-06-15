@@ -74,10 +74,22 @@ jobs:
           if [ -n "$SFTP_KNOWN_HOSTS" ]; then
             printf '%s\n' "$SFTP_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
             chmod 600 "$HOME/.ssh/known_hosts"
-            sftp_connect_program='ssh -a -x -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 -o StrictHostKeyChecking=yes'
+            strict_host_key_checking=yes
           else
-            sftp_connect_program='ssh -a -x -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 -o StrictHostKeyChecking=accept-new'
+            strict_host_key_checking=accept-new
           fi
+
+          sftp_connect_program="$(mktemp)"
+          {
+            printf '%s\n' '#!/usr/bin/env bash'
+            printf '%s\n' 'exec ssh -a -x \'
+            printf '  %s\n' '-o ConnectTimeout=30 \'
+            printf '  %s\n' '-o ServerAliveInterval=15 \'
+            printf '  %s\n' '-o ServerAliveCountMax=2 \'
+            printf '  %s\n' "-o StrictHostKeyChecking=$strict_host_key_checking \\"
+            printf '  %s\n' '"$@"'
+          } > "$sftp_connect_program"
+          chmod 700 "$sftp_connect_program"
 
           server_url="$FTP_SERVER"
           case "$server_url" in
@@ -91,7 +103,7 @@ jobs:
             set net:reconnect-interval-base 5
             set net:reconnect-interval-max 15
             set net:timeout 30
-            set sftp:connect-program \"$sftp_connect_program\"
+            set sftp:connect-program $sftp_connect_program
             mirror -R --verbose public/ \"$FTP_SERVER_DIR\"
             bye
           "
