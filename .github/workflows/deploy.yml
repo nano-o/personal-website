@@ -119,23 +119,45 @@ jobs:
             set net:timeout 30
             set sftp:connect-program $sftp_connect_program
             mirror -R --verbose public/ $FTP_SERVER_DIR
+            put -O $FTP_SERVER_DIR public/.htaccess
             bye
           "
 
       - name: Verify deployed site
         run: |
           marker_url="${SITE_URL%/}/deploy-check.txt?sha=$GITHUB_SHA"
+          site_url="${SITE_URL%/}/"
+          http_url="http://${site_url#https://}"
+
+          marker_verified=false
 
           for attempt in 1 2 3 4 5; do
             marker="$(curl --fail --silent --show-error --location --max-time 30 "$marker_url" || true)"
             marker="$(printf '%s' "$marker" | tr -d '\r\n')"
 
             if [ "$marker" = "$GITHUB_SHA" ]; then
-              exit 0
+              marker_verified=true
+              break
             fi
 
             sleep 10
           done
 
-          echo "::error title=Deployment verification failed::Uploaded files were not served from $marker_url."
-          exit 1
+          if [ "$marker_verified" != true ]; then
+            echo "::error title=Deployment verification failed::Uploaded files were not served from $marker_url."
+            exit 1
+          fi
+
+          headers="$(curl --fail --silent --show-error --dump-header - --output /dev/null --max-time 30 "$site_url")"
+
+          if ! printf '%s\n' "$headers" | grep -iq '^strict-transport-security: .*max-age='; then
+            echo "::error title=HSTS verification failed::No Strict-Transport-Security header was served from $site_url."
+            exit 1
+          fi
+
+          redirect_url="$(curl --silent --show-error --output /dev/null --write-out '%{redirect_url}' --max-time 30 "$http_url")"
+
+          if [ "$redirect_url" != "$site_url" ]; then
+            echo "::error title=HTTPS redirect verification failed::$http_url redirected to '$redirect_url' instead of '$site_url'."
+            exit 1
+          fi

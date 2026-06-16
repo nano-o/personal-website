@@ -6,4 +6,4 @@ RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} !^www\.losa\.fr$ [NC]
 RewriteRule ^ https://www.losa.fr%{REQUEST_URI} [R=301,L]
 
-Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" "expr=%{HTTPS} == 'on'"
+Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
