@@ -32,3 +32,9 @@ Configure these repository secrets in GitHub:
 ## Third-party assets
 
 The inline link icons in `templates/macros/icons.html` use SVG path data from [Lucide Icons](https://lucide.dev/). See `LICENSES.md`.
+
+## License and citation
+
+Unless otherwise noted, content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and code is licensed under the [Apache License 2.0](LICENSE-APACHE-2.0). See [LICENSE.md](LICENSE.md) for the file-type split.
+
+If you use or cite material from this repository, please use the metadata in [CITATION.cff](CITATION.cff).

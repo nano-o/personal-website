@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use or cite material from this repository, please cite it as below."
+authors:
+  - family-names: "Losa"
+    given-names: "Giuliano"
+title: "losa.fr"
+url: "https://www.losa.fr/"
+repository-code: "https://github.com/nano-o/personal-website"
+date-released: "2026-06-16"
