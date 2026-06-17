@@ -22,9 +22,9 @@ However, after first publishing this blog post, I realized that I must have had 
 So, let us say that we are going to sketch how to obtain properties (a) and (b) using simple quorum patterns inspired by both works.
 
 As Eli Gafni would say, the key to solving consensus is to first solve the adopt-commit problem[^gafni-rrfd].
-We will follow his advice and focus on solving adopt-commit.
 In fact, solving our consensus problem reduces to solving adopt-commit with a good-case latency of two message delays while sending $O(n^2)$ bits in the worst case.
-Essentially, each consensus view can be implemented using two consecutive instances of adopt-commit: the first to try to commit the leader's proposal, the second to lock the committed value, if any, before the next view; we leave the details as an exercise to the reader.
+Essentially, each consensus view can be implemented using two consecutive instances of adopt-commit: the first to try to commit the leader's proposal, the second to lock the committed value, if any, before the next view (we leave the details as an exercise to the reader).
+So we will now focus on solving adopt-commit, and this will expose clearly some interesting quorum patters found in Forget-IT and IT-Kuplex.
 
 [^gafni-rrfd]: Adopt-commit was first presented at PODC 1998 by Eli Gafni in [*Round-by-round fault detectors: unifying synchrony and asynchrony*](https://dl.acm.org/doi/abs/10.1145/277697.277724).
 
