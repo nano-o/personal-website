@@ -301,7 +301,7 @@ action output_no_core_step(p:party, v:val, q:quorum) = {
 }
 
 # Byzantine parties may equivocate and may change their sent-message relations
-# arbitrarily. Their outputs are irrelevant to the properties below.
+# arbitrarily.
 action byz_party(p:party) = {
     require faulty(p);
     vote(p, V) := *;
