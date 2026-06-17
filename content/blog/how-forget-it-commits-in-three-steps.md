@@ -1,5 +1,5 @@
 +++
-title = "How Forget-IT Commits in Three Steps"
+title = "Signature-Free BFT Consensus in Three Steps"
 date = 2026-06-16
 path = "blog/how-forget-it-commits-in-three-steps"
 
@@ -8,16 +8,20 @@ katex = true
 categories = ["bft", "consensus", "signature-free agreement"]
 +++
 
+**Update, June 16, 2026:** Revised the framing after first publication.
+
 # Introduction
 
 Recently, Abraham et al. presented [Forget-IT](https://eprint.iacr.org/2026/355), a new partially-synchronous, signature-free BFT consensus protocol for $n=3f+1$ parties among which $f$ may be Byzantine.
-Forget-IT achieves two properties never achieved in combination before[^castro]: when the network is synchronous, it commits a correct leader's proposal in just three message delays, and it sends only $O(n^2)$ bits per view in the worst case.
-However, Forget-IT is a very intricate protocol, maybe because it also achieves other interesting properties such as having bounded local state.
-[^castro]: A solution that commits in three message delays in the good case but sends $O(n^3)$ bits per view in the worst case appears in Chapter 3 of [the PhD thesis of Miguel Castro](https://pmg.csail.mit.edu/~castro/thesis.pdf). Solutions with $O(n^2)$ bits per view but more than three message delays in the good case include [TetraBFT](https://dl.acm.org/doi/10.1145/3662158.3662783) and [IT-HS](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.OPODIS.2020.11).
+Forget-IT achieves two properties never achieved in combination before[^it-protocols]: (a) when the network is synchronous, it commits a correct leader's proposal in just three message delays, and (b) even in the worst case, it sends only $O(n^2)$ bits per view.
+Having tried and failed to obtain such a protocol before, I set out to understand the core idea behind it.
+[^it-protocols]: A solution that commits in three message delays in the good case but sends $O(n^3)$ bits per view in the worst case appears in Chapter 3 of [the PhD thesis of Miguel Castro](https://pmg.csail.mit.edu/~castro/thesis.pdf). Solutions with $O(n^2)$ bits per view but more than three message delays in the good case include [TetraBFT](https://dl.acm.org/doi/10.1145/3662158.3662783) and [IT-HS](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.OPODIS.2020.11).
 
-In this blog post, I would like to distill Forget-IT down to the core mechanism that allows it to commit in 3 message delays in the good case while sending only $O(n^2)$ bits per view in the worst case.
+I initially framed this blog post as distilling Forget-IT down to the core mechanism that allows it to achieve points (a) and (b).
+However, after first publishing this blog post, I realized that I must have had elements of [IT-Kuplex](https://decentralizedthoughts.github.io/2026-06-05-IT-Kuplex/) in mind too.
+So, let us say that we are going to sketch how to obtain properties (a) and (b) using simple quorum patterns inspired by both works.
 
-As Eli Gafni would say, the key to solving consensus is to first solve adopt-commit[^gafni-rrfd].
+As Eli Gafni would say, the key to solving consensus is to first solve the adopt-commit problem[^gafni-rrfd].
 We will follow his advice and focus on solving adopt-commit.
 In fact, solving our consensus problem reduces to solving adopt-commit with a good-case latency of two message delays while sending $O(n^2)$ bits in the worst case.
 Essentially, each consensus view can be implemented using two consecutive instances of adopt-commit: the first to try to commit the leader's proposal, the second to lock the committed value, if any, before the next view; we leave the details as an exercise to the reader.
@@ -46,7 +50,7 @@ Our task is to solve the adopt-commit* problem such that:
 1. If all correct parties receive the same input (the *good case*), then they all commit in two message delays.
 2. In the worst case, correct parties together send at most $O(n^2)$ bits in total.
 
-The algorithm evolves in two phases.
+Here is an algorithm. It evolves in two phases.
 First, each party broadcasts a vote for its input.
 Second, parties exchange three types of message to let each other know what votes they received:
 
