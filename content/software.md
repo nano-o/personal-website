@@ -29,3 +29,9 @@ Sources are on github at [https://github.com/nano-o/python-fbas](https://github.
 The algorithm is the "channel-counting" termination-detection algorithm of Kumar (1985).
 The proof I propose is a great example of inductive reasoning about distributed algorithms.
 The [exercise branch](https://github.com/nano-o/Distributed-termination-detection/tree/exercise) of the repository sets things up as an exercise in finding inductive invariants.
+
+## Accountable safety of Tendermint
+
+An IVy model and proof of accountable safety for Tendermint.
+Developed with help from [Benoit Razet](https://www.linkedin.com/in/benoit-razet/) while I was at Galois.
+Sources are in the CometBFT repository at [https://github.com/cometbft/cometbft/tree/main/spec/ivy-proofs](https://github.com/cometbft/cometbft/tree/main/spec/ivy-proofs).
