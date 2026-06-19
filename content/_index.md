@@ -11,6 +11,14 @@ Before that, I worked at [Galois](https://galois.com/), at UCLA (as a postdoc), 
 
 # News
 
+I am a member of the program committee for [DISC 2026](https://www.disc-conference.org/).
+
+Paper accepted at CCS 2026: [Angelfish: Leader, DAG, or Anywhere in Between](https://arxiv.org/abs/2509.15847), with Qianyu Yu, Nibesh Shrestha, and Xuechao Wang.
+
+New preprint on arXiv: [Simple-IT: Practical Low-Latency Signature-Free BFT Consensus](https://arxiv.org/html/2606.14404), with Qianyu Yu, Juan Villacis, Zhuolun Xiang, and Xuechao Wang.
+
+Another recent preprint on arXiv: [Monotone Erasure Codes](https://arxiv.org/abs/2605.22426), with Vivien Bammert, Annalisa Cimatti, Orestis Alpos, and Christian Cachin.
+
 I will be giving a lecture on Federated Byzantine Agreement at the [SPTDC School on the Practice and Theory of Distributed Computing](https://sptdc2026.ics.forth.gr/) on Monday April 7th, 2026, in Herklion, Crete.
 
 Paper accepted at [CAV 2026](https://conferences.i-cav.org/2026/): "Show Me The Money: An Exercise in Proof-Driven Software Understanding" (category Industrial Experience Reports & Case Studies), with J. Tafese, K. Nukala, H. Saidi, N. Shankar, A. Gurfinkel, G. Losa.
