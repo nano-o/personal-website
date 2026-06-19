@@ -19,8 +19,6 @@ New preprint on arXiv: [Simple-IT: Practical Low-Latency Signature-Free BFT Cons
 
 Another recent preprint on arXiv: [Monotone Erasure Codes](https://arxiv.org/abs/2605.22426), with Vivien Bammert, Annalisa Cimatti, Orestis Alpos, and Christian Cachin.
 
-I will be giving a lecture on Federated Byzantine Agreement at the [SPTDC School on the Practice and Theory of Distributed Computing](https://sptdc2026.ics.forth.gr/) on Monday April 7th, 2026, in Herklion, Crete.
-
 Paper accepted at [CAV 2026](https://conferences.i-cav.org/2026/): "Show Me The Money: An Exercise in Proof-Driven Software Understanding" (category Industrial Experience Reports & Case Studies), with J. Tafese, K. Nukala, H. Saidi, N. Shankar, A. Gurfinkel, G. Losa.
 
 I am a member of the review committee of [PLDI 2026](https://pldi26.sigplan.org/).
