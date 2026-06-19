@@ -36,6 +36,7 @@ In the adopt-commit problem, each party receives an input value and must eventua
 
 - Validity: if a correct party commits or adopts $v$, then $v$ is the input of a correct party.
 - Agreement: if a correct party commits $v$, then no correct party commits or adopts a different value.
+- Unanimity: if all correct parties have the same input value, then then all commit that value.
 
 Here we consider a slightly relaxed variant of adopt-commit, which we call adopt-commit*, where parties do not terminate after adopting or committing a value and where we allow a party to adopt and then commit the same value.
 This simplifies the solution and works fine if the goal is to use it to implement consensus.
@@ -90,9 +91,10 @@ Agreement is not too hard:
 Note that no correct party broadcasts both a commit message for a value $v$ and either a commit/candidate message for a different value or a no-core message (this follows purely from the local rules a party follows).
 Thus, by quorum intersection, it is impossible for a correct party to commit a value $v$ and another correct party to commit or adopt a different value.
 
-## Good-case latency
+## Unanimity and good-case latency
 
 Next, let us show that, if all correct parties have the same input, then they all commit in two message delays.
+This covers both the unanimity property and the good-case latency.
 Suppose all correct parties have the same input $v$.
 It follows that:
 - By witness-set validity, no correct party ever broadcasts a candidate message for a value other than $v$.
