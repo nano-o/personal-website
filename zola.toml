@@ -28,10 +28,6 @@ name = "Research"
 url = "/research/"
 
 [[extra.nav]]
-name = "Talks"
-url = "/talks/"
-
-[[extra.nav]]
 name = "Blog"
 url = "/blog/"
 

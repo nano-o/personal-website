@@ -17,9 +17,20 @@
 {% endblock head_extra %}
 
 {% block content %}
-  <header class="page-header">
-    <h1>{{ page.title }}</h1>
-    {% if page.date %}<p class="meta">{{ page.date | date(format="%B %d, %Y") }}</p>{% endif %}
-  </header>
+  {% set current = current_path | default(value="") %}
+  {% set is_research_page = current == "/research/" or current is starting_with("/research/") %}
+  {% if is_research_page %}
+    <nav class="sub-nav" aria-label="Research navigation">
+      <a href="/research/"{% if current == "/research/" %} class="is-active" aria-current="page"{% endif %}>Publications</a>
+      <a href="/research/talks/"{% if current == "/research/talks/" %} class="is-active" aria-current="page"{% endif %}>Talks</a>
+      <a href="/research/workshops/"{% if current == "/research/workshops/" %} class="is-active" aria-current="page"{% endif %}>Workshops</a>
+      <a href="/research/service/"{% if current == "/research/service/" %} class="is-active" aria-current="page"{% endif %}>Service</a>
+    </nav>
+  {% else %}
+    <header class="page-header">
+      <h1>{{ page.title }}</h1>
+      {% if page.date %}<p class="meta">{{ page.date | date(format="%B %d, %Y") }}</p>{% endif %}
+    </header>
+  {% endif %}
   {{ page.content | safe }}
 {% endblock content %}

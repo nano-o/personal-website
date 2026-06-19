@@ -272,6 +272,42 @@ a:focus-visible {
   font-size: 2rem;
 }
 
+.sub-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: -0.8rem 0 1.8rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+
+.sub-nav a {
+  position: relative;
+  padding: 0.2rem 0 0.65rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sub-nav a:hover,
+.sub-nav a:focus-visible {
+  color: var(--accent-strong);
+}
+
+.sub-nav a.is-active {
+  color: var(--accent-strong);
+}
+
+.sub-nav a.is-active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  content: "";
+}
+
 .feed-links {
   display: flex;
   flex-wrap: wrap;

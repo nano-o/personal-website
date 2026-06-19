@@ -1,9 +1,8 @@
 +++
 title = "Talks"
-path = "talks"
+path = "research/talks"
+aliases = ["/talks/"]
 +++
-
-## Recent Talks
 
 * Saturday, June 6th, 2026 at [IC3 Blockchain Camp 2026](https://ic3research.org/ic3-blockchain-camp-2026/), Princeton, NJ: Fast Deterministically Safe Proof-of-Work Consensus. [Slides](/documents/ic3-2026-deterministic-pow.pdf) and [paper](https://arxiv.org/abs/2512.19968)
 * Monday, April 27th, 2026 at the [SPTDC School on the Practice and Theory of Distributed Computing](https://sptdc2026.ics.forth.gr/), Heraklion, Crete: Federated Byzantine Agreement. [Slides](/documents/FBA.pdf)
