@@ -10,6 +10,8 @@ categories = ["bft", "consensus", "signature-free agreement"]
 
 **Update, June 16, 2026:** Revised the framing after first publication.
 
+**Update, June 20, 2026:** Simplified the protocol (merged witnesses and cores).
+
 # Introduction
 
 Recently, Abraham et al. presented [Forget-IT](https://eprint.iacr.org/2026/355), a new partially-synchronous, signature-free BFT consensus protocol for $n=3f+1$ parties among which $f$ may be Byzantine.
@@ -57,7 +59,7 @@ Second, parties exchange three types of message to let each other know what vote
 
 - *Commit messages.* A party sends a commit message for a value $v$ when it has received votes for $v$ from $n-f$ parties and it has not previously sent a no-core message or a commit or candidate message for a different value.
 - *Candidate messages.* A party sends a candidate message for a value $v$ when it has received votes for $v$ from $f+1$ parties (excluding parties that sent multiple votes) and it has not previously sent a commit message for a different value.
-- *No-core messages.* A party sends a no-core message when it has received votes from $n-f$ parties (excluding parties that sent multiple votes) and, among those votes, no value got votes from $n-2f$ or more parties, and the party has not previously sent a commit message.
+- *No-core messages.* A party sends a no-core message when it has received votes from $n-f$ parties (excluding parties that sent multiple votes) and, among those votes, no value got votes from a core of $f+1$ parties, and the party has not previously sent a commit message.
 
 Finally, parties output according to the following rules:
 
@@ -74,15 +76,14 @@ We must show the following:
 - Correct parties together send $O(n^2)$ bits in the worst case.
 
 First, let us define some vocabulary.
-Call sets of at least $n-f$ parties *quorums*, sets of at least $n-2f$ parties *cores*, and sets of at least $f+1$ parties *validity witness sets*.
+Call sets of at least $n-f$ parties *quorums* and sets of at least $f+1$ parties *cores*.
 Say a set is correct when all its members are correct.
 The algorithm depends on the following properties of quorums and cores.
 - *Quorum intersection:* Every two quorums have a correct party in common (because $2(n-f)-n>f$).
 - *Quorum availability:* Correct parties form a quorum.
-- *Quorum validity:* Every quorum contains a core of correct parties (because $(n-f)-f=n-2f$).
-- *Witness-set validity:* Every witness set contains a correct party.
-- *Witness subsumption:* Every core set is a witness set (because $n-2f\geq f+1$).
-- *Core/quorum intersection:* Every correct core set and every quorum have a correct party in common (because $(n-f)+(n-2f)-n>0$).
+- *Quorum validity:* Every quorum contains a core of correct parties (because $(n-f)-f=n-2f\geq f+1$).
+- *Core validity:* Every core contains a correct party (because a core has $f+1$ parties and at most $f$ are Byzantine).
+- *Core/quorum intersection:* Every correct core set and every quorum have a correct party in common (because $(f+1)+(n-f)-n>0$).
 
 ## Validity and Agreement
 
@@ -97,7 +98,7 @@ Next, let us show that, if all correct parties have the same input, then they al
 This covers both the unanimity property and the good-case latency.
 Suppose all correct parties have the same input $v$.
 It follows that:
-- By witness-set validity, no correct party ever broadcasts a candidate message for a value other than $v$.
+- By core validity, no correct party ever broadcasts a candidate message for a value other than $v$.
 - By quorum validity, no correct party ever broadcasts a commit message for a value other than $v$.
 - By quorum validity, no correct party ever broadcasts a no-core message.
 
@@ -108,13 +109,13 @@ Thus, by quorum availability, every correct party will eventually broadcast a co
 It remains to show that every correct party eventually commits or adopts a value.
 Consider the following two exhaustive cases.
 
-First, assume there is a value $v$ such that at least $n-2f$ correct parties (a core set) have input $v$.
+First, assume there is a value $v$ such that at least $f+1$ correct parties (a core set) have input $v$.
 Then, by core/quorum intersection, no correct party broadcasts a commit message for a value other than $v$.
-Thus, by witness subsumption, every correct party eventually broadcasts a candidate message for $v$ and, by quorum availability, every correct party adopts $v$ unless it has already adopted a value.
+Moreover, every correct party eventually receives those core votes and broadcasts a candidate message for $v$; by quorum availability, every correct party adopts $v$ unless it has already adopted a value.
 
-Second, assume there is no value $v$ such that at least $n-2f$ correct parties have input $v$.
+Second, assume there is no value $v$ such that at least $f+1$ correct parties have input $v$.
 Then, by quorum validity, no correct party ever broadcasts a commit message.
-Moreover, every correct party eventually receives the votes from all correct parties, which form a quorum in which no subset of $n-2f$ parties voted for the same value.
+Moreover, every correct party eventually receives the votes from all correct parties, which form a quorum in which no core voted for the same value.
 Hence, every correct party broadcasts a no-core message and then adopts its own input, unless it has already adopted a value.
 
 In both cases, we concluded that every correct party adopts a value, and so we are done.
@@ -122,7 +123,7 @@ In both cases, we concluded that every correct party adopts a value, and so we a
 ## Communication complexity
 
 Finally, we must show that correct parties only send $O(n^2)$ bits in total.
-Assuming values are of constant size, it suffices to observe that each party broadcasts at most six messages: one vote message, one no-core message, one commit message, and three candidate messages (each distinct candidate needs a disjoint set of $f+1$ non-equivocating voters; since $n\leq 3(f+1)$, there can be at most three).
+Assuming values are of constant size, it suffices to observe that each party broadcasts at most six messages: one vote message, one no-core message, one commit message, and three candidate messages (each distinct candidate needs a disjoint core of $f+1$ non-equivocating voters; since $n\leq 3(f+1)$, there can be at most three).
 
 Note that, if we used $f<\lfloor\frac{n-1}{3}\rfloor$, we would increase the number of possible candidate messages.
 In the general case of $f<\frac{n}{3}$ we may get a linear number of candidate messages and an overall bit complexity of $O(n^3)$.
@@ -136,7 +137,7 @@ A formalization in Ivy is included below, and mechanically-checked proofs of saf
 So what is the key insight?
 I think it is the 3-way case split and the three corresponding message types:
 - If all correct parties have the same input $v$, then every correct party gets a quorum of "commit" messages for $v$ in two message delays.
-- If some value $v$ has a correct core ($n-2f$ correct processes with the same input), then that core prevents commits for conflicting values, and we eventually get a quorum of candidate messages for $v$.
+- If some value $v$ has a correct core ($f+1$ correct processes with the same input), then that core prevents commits for conflicting values, and we eventually get a quorum of candidate messages for $v$.
 - If no correct core has the same input, then we eventually get a quorum of "no-core" messages.
 
 On top of that, local exclusion rules prevent a party from sending both a commit message and either a commit/candidate message for a different value or a no-core message; thus, by quorum intersection, we have agreement.
@@ -155,18 +156,15 @@ For reference, here is the core Ivy model of the protocol.
 type party
 type val
 
-# The set types below abstract the thresholds.  Cardinalities are not encoded
-# directly; the axioms capture the threshold facts used by the protocol for n >=
-# 3f+1 and at most f Byzantine parties.
+# The set types below abstract the threshold certificates from the writeup.
+# Cardinalities are not encoded directly; the axioms capture the threshold facts
+# used by the protocol for n >= 3f+1 and at most f Byzantine parties.
 
 # A quorum represents at least n-f distinct senders.
 type quorum
 
-# A core represents at least n-2f distinct senders.
+# A core represents at least f+1 distinct senders.
 type core
-
-# A witness set represents at least f+1 distinct senders.
-type witness
 
 ################################################################################
 # Immutable state and quorum theory
@@ -176,7 +174,6 @@ relation faulty(P:party)
 
 relation quorum_member(Q:quorum, P:party)
 relation core_member(S:core, P:party)
-relation witness_member(S:witness, P:party)
 
 # Quorum intersection
 axiom [quorum_intersection]
@@ -191,13 +188,9 @@ axiom [quorum_contains_non_faulty_core]
     exists S. forall P.
         core_member(S, P) -> ~faulty(P) & quorum_member(Q, P)
 
-# Every witness has a nonfaulty member.
-axiom [witness_has_non_faulty_member]
-    exists P. ~faulty(P) & witness_member(S, P)
-
-# Every core contains a witness.
-axiom [core_contains_witness]
-    exists W. forall P. witness_member(W, P) -> core_member(S, P)
+# Every core has a nonfaulty member.
+axiom [core_has_non_faulty_member]
+    exists P. ~faulty(P) & core_member(S, P)
 
 # A nonfaulty core intersects a quorum in a nonfaulty party.
 axiom [core_quorum_intersection]
@@ -217,7 +210,8 @@ relation candidate(P:party, V:val)
 relation commit(P:party, V:val)
 relation no_core(P:party)
 
-# Output state.
+# Output state. Parties may both commit and adopt (the same value, obviously),
+# and keep sending messages after output.
 relation commit_out(P:party, V:val)
 relation adopt_support_out(P:party, V:val)
 relation adopt_no_core_out(P:party, V:val)
@@ -264,23 +258,23 @@ action start_step(p:party, v:val) = {
 action commit_step(p:party, v:val, q:quorum) = {
     require quorum_member(q, P) -> vote(P, v);
     require ~commit(p, V);
-    require ~no_core(p);
+    require ~no_core(p); # TODO: necessary?
     require candidate(p, V) -> V = v;
     commit(p, v) := true;
 }
 
-action candidate_step(p:party, v:val, w:witness) = {
-    require witness_member(w, P) -> vote(P, v);
+action candidate_step(p:party, v:val, w:core) = {
+    require core_member(w, P) -> vote(P, v);
     require commit(p, V2) -> V2 = v;
     candidate(p, v) := true;
 }
 
 action no_core_step(p:party, q:quorum) = {
     require ~commit(p, V);
-    require (forall P. quorum_member(q, P) -> started(P));
-    require (forall B.
+    require quorum_member(q, P) -> started(P);
+    require
         (forall P . core_member(B, P) -> quorum_member(q, P))
-        -> (forall V . exists P . core_member(B, P) & ~vote(P,V)));
+        -> (exists P . core_member(B, P) & ~vote(P,V));
     no_core(p) := true;
 }
 
@@ -311,4 +305,5 @@ action byz_party(p:party) = {
     commit(p, V) := *;
     no_core(p) := *;
 }
+
 ```
