@@ -7,11 +7,19 @@ For a full list, see my profile [on DBLP](https://dblp.uni-trier.de/pid/04/11066
 
 ## Recent work
 
-* Paper accepted at CCS 2026: [Angelfish: Leader, DAG, or Anywhere in Between](https://arxiv.org/abs/2509.15847), with Qianyu Yu, Nibesh Shrestha, and Xuechao Wang.
-* New preprint on arXiv: [Simple-IT: Practical Low-Latency Signature-Free BFT Consensus](https://arxiv.org/html/2606.14404), with Qianyu Yu, Juan Villacis, Zhuolun Xiang, and Xuechao Wang.
-* Another recent preprint on arXiv: [Monotone Erasure Codes](https://arxiv.org/abs/2605.22426), with Vivien Bammert, Annalisa Cimatti, Orestis Alpos, and Christian Cachin.
-* Paper accepted at [CAV 2026](https://conferences.i-cav.org/2026/): "Show Me The Money: An Exercise in Proof-Driven Software Understanding" (category Industrial Experience Reports & Case Studies), with J. Tafese, K. Nukala, H. Saidi, N. Shankar, A. Gurfinkel, G. Losa.
-* Paper accepted at [IEEE Symposium on Security and Privacy (S&P 2026)](https://sp2026.ieee-security.org/): *[Fast Deterministically Safe Proof-of-Work Consensus](https://arxiv.org/abs/2512.19968)*, with Ali Farahbakhsh (Cornell University),  Giuliano Losa (Stellar Foundation), Youer Pu (Cornell University), and Lorenzo Alvisi (Cornell University).
+* [Angelfish: Leader, DAG, or Anywhere in Between](https://arxiv.org/abs/2509.15847)  
+With Qianyu Yu, Nibesh Shrestha, and Xuechao Wang; to appear at CCS 2026.
+* [Simple-IT: Practical Low-Latency Signature-Free BFT Consensus](https://arxiv.org/html/2606.14404)  
+With Qianyu Yu, Juan Villacis, Zhuolun Xiang, and Xuechao Wang; preprint on arXiv.
+* [Monotone Erasure Codes](https://arxiv.org/abs/2605.22426)  
+With Vivien Bammert, Annalisa Cimatti, Orestis Alpos, and Christian Cachin; preprint on arXiv.
+* Show Me The Money: An Exercise in Proof-Driven Software Understanding  
+With J. Tafese, K. Nukala, H. Saidi, N. Shankar, A. Gurfinkel, G. Losa; [CAV 2026](https://conferences.i-cav.org/2026/) in the Industrial Experience Reports & Case Studies category.
+* [Fast Deterministically Safe Proof-of-Work Consensus](https://arxiv.org/abs/2512.19968)  
+With Ali Farahbakhsh (Cornell University), Giuliano Losa (Stellar Foundation), Youer Pu (Cornell University), and Lorenzo Alvisi (Cornell University); [IEEE Symposium on Security and Privacy (S&P 2026)](https://sp2026.ieee-security.org/).
+* [Optimistic, Signature-Free Reliable Broadcast and Its Applications](https://arxiv.org/abs/2505.02761)  
+With Nibesh Shrestha, Qianyu Yu, Aniket Kate, Giuliano Losa, Kartik Nayak, Xuechao Wang; [CCS 2025](https://www.sigsac.org/ccs/CCS2025/).
+Note there is a mistake in the RBC algorithm of the published version; this is fixed in the arXiv version (v4 onwards).
 
 ## Some of my all-time favorites
 
