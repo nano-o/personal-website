@@ -36,7 +36,7 @@ In the adopt-commit problem, each party receives an input value and must eventua
 
 - Validity: if a correct party commits or adopts $v$, then $v$ is the input of a correct party.
 - Agreement: if a correct party commits $v$, then no correct party commits or adopts a different value.
-- Unanimity: if all correct parties have the same input value, then then all commit that value.
+- Unanimity: if all correct parties have the same input value, then they all commit that value.
 
 Here we consider a slightly relaxed variant of adopt-commit, which we call adopt-commit*, where parties do not terminate after adopting or committing a value and where we allow a party to adopt and then commit the same value.
 This simplifies the solution and works fine if the goal is to use it to implement consensus.
