@@ -1,5 +1,6 @@
 +++
 title = "Giuliano Losa"
+description = "Research homepage of Giuliano Losa, a researcher in distributed computing and formal methods."
 template = "index.html"
 +++
 

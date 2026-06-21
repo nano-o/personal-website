@@ -1,6 +1,7 @@
 +++
 title = "Streamlet in TLA+"
 date = 2022-01-04
+description = "A PlusCal/TLA+ specification of the Streamlet blockchain-consensus algorithm, with TLC checks for safety and liveness."
 path = "blog/streamlet-in-tla+"
 
 [extra]

@@ -1,6 +1,6 @@
 base_url = "https://www.losa.fr"
 title = "Giuliano Losa"
-description = "Giuliano's website"
+description = "Research homepage of Giuliano Losa, a researcher in distributed computing and formal methods."
 compile_sass = true
 generate_feeds = true
 feed_filenames = ["feed.xml"]
@@ -18,6 +18,42 @@ bio = "Researcher in distributed computing and formal methods"
 avatar = "/images/painting-cropped.jpg"
 location = "Washington State, USA"
 copyright_notice = "Ce site est hébergé par OVH, 2 rue Kellermann - 59100 Roubaix - France. Pour contacter cet hébergeur, rendez-vous à l'adresse https://help.ovhcloud.com/fr/."
+
+[extra.schema]
+alternate_names = ["nano-o"]
+given_name = "Giuliano"
+family_name = "Losa"
+job_title = "Researcher"
+description = "Giuliano Losa is a researcher in distributed computing and formal methods."
+disambiguating_description = "Researcher in distributed computing and formal methods"
+in_language = "en-US"
+knows_languages = ["en", "fr"]
+knows_about = [
+  "distributed computing",
+  "formal methods",
+  "distributed systems",
+  "consensus protocols",
+  "Byzantine fault tolerance",
+  "TLA+",
+  "Isabelle/HOL",
+  "blockchain consensus",
+]
+same_as = [
+  "https://x.com/giuliano_losa",
+  "https://github.com/nano-o",
+  "https://scholar.google.com/citations?user=m2jQVgQAAAAJ",
+  "https://dblp.uni-trier.de/pid/04/11066.html",
+]
+license = "https://creativecommons.org/licenses/by/4.0/"
+
+[[extra.schema.works_for]]
+name = "Stellar Development Foundation"
+
+[[extra.schema.alumni_of]]
+name = "EPFL"
+
+[[extra.schema.alumni_of]]
+name = "CentraleSupélec"
 
 [[extra.nav]]
 name = "Home"

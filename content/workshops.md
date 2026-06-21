@@ -1,5 +1,6 @@
 +++
 title = "Workshops"
+description = "Workshops organized or co-organized by Giuliano Losa."
 path = "research/workshops"
 +++
 

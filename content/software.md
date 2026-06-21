@@ -1,5 +1,6 @@
 +++
 title = "Software, Specifications, Proofs, etc."
+description = "Software, specifications, and proofs by Giuliano Losa, including TLA+ specifications and model-checking tools."
 path = "software"
 +++
 

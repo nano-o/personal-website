@@ -1,16 +1,23 @@
 {% import "macros/icons.html" as icons %}
+{% set meta_description = config.description %}
+{% if page and page.description %}
+  {% set_global meta_description = page.description %}
+{% elif section and section.description %}
+  {% set_global meta_description = section.description %}
+{% endif %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% if page %}{{ page.title }} - {{ config.title }}{% elif section and section.title %}{{ section.title }} - {{ config.title }}{% else %}{{ config.title }}{% endif %}{% endblock title %}</title>
-  <meta name="description" content="{{ config.description }}">
+  <meta name="description" content="{{ meta_description }}">
   <meta property="og:site_name" content="{{ config.title }}">
   <meta property="og:title" content="{% if page %}{{ page.title }}{% elif section and section.title %}{{ section.title }}{% else %}{{ config.title }}{% endif %}">
-  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:description" content="{{ meta_description }}">
   <meta property="og:image" content="{{ get_url(path=config.extra.avatar) }}">
   <link rel="canonical" href="{{ current_url | default(value=config.base_url) }}">
+  {% include "partials/jsonld.html" %}
   {% block feed_links %}
     <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Blog Feed" href="{{ get_url(path='/feed.xml', trailing_slash=false) }}">
   {% endblock feed_links %}

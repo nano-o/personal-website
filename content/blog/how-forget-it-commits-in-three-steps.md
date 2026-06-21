@@ -1,6 +1,8 @@
 +++
 title = "Signature-Free BFT Consensus in Three Steps"
 date = 2026-06-16
+updated = 2026-06-20
+description = "A sketch of signature-free BFT consensus via two-message-delay adopt-commit patterns inspired by Forget-IT and IT-Kuplex."
 path = "blog/how-forget-it-commits-in-three-steps"
 
 [extra]

@@ -1,0 +1,233 @@
+{% if current_url %}
+{% set schema = config.extra.schema %}
+{% set root_url = get_url(path="/", trailing_slash=true) %}
+{% set page_url = current_url %}
+{% set current_path_value = current_path | default(value="/") %}
+{% set website_id = root_url ~ "#website" %}
+{% set person_id = root_url ~ "#person" %}
+{% set person_image_id = root_url ~ "#person-image" %}
+{% set webpage_id = page_url ~ "#webpage" %}
+{% set breadcrumb_id = page_url ~ "#breadcrumb" %}
+{% set blog_url = get_url(path="@/blog/_index.md", trailing_slash=true) %}
+{% set blog_id = blog_url ~ "#blog" %}
+{% set blog_webpage_id = blog_url ~ "#webpage" %}
+{% set blog_name = config.title ~ " Blog" %}
+{% set blogposting_id = page_url ~ "#blogposting" %}
+{% set blogposting_image_id = page_url ~ "#blogposting-image" %}
+{% set blog_section = get_section(path="blog/_index.md", metadata_only=true) %}
+{% set page_title = config.title %}
+{% if page %}
+  {% set_global page_title = page.title %}
+{% elif section and section.title %}
+  {% set_global page_title = section.title %}
+{% endif %}
+{% set page_description = config.description %}
+{% if page and page.description %}
+  {% set_global page_description = page.description %}
+{% elif section and section.description %}
+  {% set_global page_description = section.description %}
+{% endif %}
+{% set is_home = current_path_value == "/" %}
+{% set is_blog_index = current_path_value == "/blog/" %}
+{% set is_blog_post = page and current_path_value is starting_with("/blog/") %}
+{% set is_research_page = current_path_value == "/research/" or current_path_value is starting_with("/research/") %}
+{% set is_software_page = current_path_value == "/software/" %}
+{% set is_collection_page = is_blog_index or is_research_page or is_software_page %}
+{% set webpage_type = "WebPage" %}
+{% if is_home %}
+  {% set_global webpage_type = "ProfilePage" %}
+{% elif is_collection_page %}
+  {% set_global webpage_type = "CollectionPage" %}
+{% endif %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": {{ website_id | json_encode() | safe }},
+      "url": {{ root_url | json_encode() | safe }},
+      "name": {{ config.title | json_encode() | safe }}{% if is_home %},
+      "alternateName": {{ schema.alternate_names | json_encode() | safe }},
+      "description": {{ config.description | json_encode() | safe }},
+      "inLanguage": {{ schema.in_language | json_encode() | safe }},
+      "publisher": {
+        "@id": {{ person_id | json_encode() | safe }}
+      },
+      "image": {
+        "@id": {{ person_image_id | json_encode() | safe }}
+      }{% endif %}
+    },
+    {
+      "@type": "Person",
+      "@id": {{ person_id | json_encode() | safe }},
+      "url": {{ root_url | json_encode() | safe }},
+      "name": {{ config.title | json_encode() | safe }},
+      "alternateName": {{ schema.alternate_names | json_encode() | safe }},
+      "givenName": {{ schema.given_name | json_encode() | safe }},
+      "familyName": {{ schema.family_name | json_encode() | safe }},
+      "description": {{ schema.description | json_encode() | safe }},
+      "disambiguatingDescription": {{ schema.disambiguating_description | json_encode() | safe }},
+      "jobTitle": {{ schema.job_title | json_encode() | safe }},
+      "knowsLanguage": {{ schema.knows_languages | json_encode() | safe }},
+      "knowsAbout": {{ schema.knows_about | json_encode() | safe }},
+      "homeLocation": {
+        "@type": "Place",
+        "name": {{ config.extra.location | json_encode() | safe }},
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "WA",
+          "addressCountry": "US"
+        }
+      },
+      "worksFor": [
+        {% for organization in schema.works_for %}
+        {
+          "@type": "Organization",
+          "name": {{ organization.name | json_encode() | safe }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      "alumniOf": [
+        {% for organization in schema.alumni_of %}
+        {
+          "@type": "CollegeOrUniversity",
+          "name": {{ organization.name | json_encode() | safe }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      "image": {
+        "@type": "ImageObject",
+        "@id": {{ person_image_id | json_encode() | safe }},
+        "url": {{ get_url(path=config.extra.avatar) | json_encode() | safe }},
+        "caption": {{ config.title | json_encode() | safe }}
+      },
+      "sameAs": {{ schema.same_as | json_encode() | safe }}
+    },
+    {
+      "@type": {{ webpage_type | json_encode() | safe }},
+      "@id": {{ webpage_id | json_encode() | safe }},
+      "url": {{ page_url | json_encode() | safe }},
+      "isPartOf": {
+        "@id": {{ website_id | json_encode() | safe }}
+      },
+      "name": {{ page_title | json_encode() | safe }},
+      "description": {{ page_description | json_encode() | safe }},
+      "inLanguage": {{ schema.in_language | json_encode() | safe }}{% if page and page.date %},
+      "datePublished": {{ page.date | date(format="%+") | json_encode() | safe }},
+      "dateModified": {{ page.updated | default(value=page.date) | date(format="%+") | json_encode() | safe }}{% endif %}{% if is_home %},
+      "mainEntity": {
+        "@id": {{ person_id | json_encode() | safe }}
+      }{% elif is_collection_page %},
+      "about": {
+        "@id": {{ person_id | json_encode() | safe }}
+      }{% endif %}{% if not is_home %},
+      "breadcrumb": {
+        "@id": {{ breadcrumb_id | json_encode() | safe }}
+      }{% endif %}
+    }{% if not is_home %},
+    {
+      "@type": "BreadcrumbList",
+      "@id": {{ breadcrumb_id | json_encode() | safe }},
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {{ root_url | json_encode() | safe }}
+        }{% if is_blog_index %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": {{ blog_url | json_encode() | safe }}
+        }{% elif is_blog_post %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": {{ blog_url | json_encode() | safe }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ page_title | json_encode() | safe }},
+          "item": {{ page_url | json_encode() | safe }}
+        }{% elif is_research_page and current_path_value != "/research/" %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Research",
+          "item": {{ get_url(path="/research/", trailing_slash=true) | json_encode() | safe }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ page_title | json_encode() | safe }},
+          "item": {{ page_url | json_encode() | safe }}
+        }{% else %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ page_title | json_encode() | safe }},
+          "item": {{ page_url | json_encode() | safe }}
+        }{% endif %}
+      ]
+    }{% endif %}{% if is_blog_index or is_blog_post %},
+    {
+      "@type": "Blog",
+      "@id": {{ blog_id | json_encode() | safe }},
+      "isPartOf": {
+        "@id": {{ website_id | json_encode() | safe }}
+      },
+      "mainEntityOfPage": {
+        "@id": {{ blog_webpage_id | json_encode() | safe }}
+      },
+      "name": {{ blog_name | json_encode() | safe }},
+      "description": {{ blog_section.description | default(value=config.description) | json_encode() | safe }},
+      "inLanguage": {{ schema.in_language | json_encode() | safe }},
+      "publisher": {
+        "@id": {{ person_id | json_encode() | safe }}
+      },
+      "license": {{ schema.license | json_encode() | safe }}
+    }{% endif %}{% if is_blog_post %},
+    {
+      "@type": "BlogPosting",
+      "@id": {{ blogposting_id | json_encode() | safe }},
+      "url": {{ page_url | json_encode() | safe }},
+      "mainEntityOfPage": {
+        "@id": {{ webpage_id | json_encode() | safe }}
+      },
+      "isPartOf": {
+        "@id": {{ blog_id | json_encode() | safe }}
+      },
+      "headline": {{ page.title | json_encode() | safe }},
+      "description": {{ page_description | json_encode() | safe }}{% if page.extra.categories %},
+      "articleSection": {{ page.extra.categories | json_encode() | safe }},
+      "keywords": {{ page.extra.categories | json_encode() | safe }}{% endif %},
+      "inLanguage": {{ schema.in_language | json_encode() | safe }},
+      "datePublished": {{ page.date | date(format="%+") | json_encode() | safe }},
+      "dateModified": {{ page.updated | default(value=page.date) | date(format="%+") | json_encode() | safe }},
+      "author": {
+        "@type": "Person",
+        "@id": {{ person_id | json_encode() | safe }},
+        "name": {{ config.title | json_encode() | safe }},
+        "url": {{ root_url | json_encode() | safe }}
+      },
+      "publisher": {
+        "@type": "Person",
+        "@id": {{ person_id | json_encode() | safe }},
+        "name": {{ config.title | json_encode() | safe }},
+        "url": {{ root_url | json_encode() | safe }}
+      }{% if page.extra.image %},
+      "image": {
+        "@type": "ImageObject",
+        "@id": {{ blogposting_image_id | json_encode() | safe }},
+        "url": {{ get_url(path=page.extra.image) | json_encode() | safe }}
+      }{% endif %},
+      "license": {{ schema.license | json_encode() | safe }}
+    }{% endif %}
+  ]
+}
+</script>
+{% endif %}

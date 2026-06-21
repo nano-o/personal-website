@@ -1,5 +1,6 @@
 +++
 title = "Talks"
+description = "Talks by Giuliano Losa on distributed computing, formal methods, and blockchain consensus."
 path = "research/talks"
 aliases = ["/talks/"]
 +++

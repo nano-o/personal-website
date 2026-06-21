@@ -1,5 +1,6 @@
 +++
 title = "Service"
+description = "Program committee and review committee service by Giuliano Losa."
 path = "research/service"
 +++
 
